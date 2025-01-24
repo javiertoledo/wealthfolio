@@ -24,6 +24,13 @@ impl AccountService {
         self.account_repo.load_accounts(conn)
     }
 
+    pub fn get_editable_accounts(
+        &self,
+        conn: &mut SqliteConnection,
+    ) -> Result<Vec<Account>, diesel::result::Error> {
+        self.account_repo.load_editable_accounts(conn)
+    }
+
     pub fn get_active_accounts(
         &self,
         conn: &mut SqliteConnection,

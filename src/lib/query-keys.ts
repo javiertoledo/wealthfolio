@@ -1,6 +1,7 @@
 export const QueryKeys = {
   // Account related keys
   ACCOUNTS: 'accounts',
+  EDITABLE_ACCOUNTS: 'editable_accounts',
   ACCOUNTS_SUMMARY: 'accounts_summary',
 
   // Activity related keys

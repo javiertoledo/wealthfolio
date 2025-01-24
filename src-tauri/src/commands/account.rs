@@ -19,6 +19,18 @@ pub async fn get_accounts(state: State<'_, AppState>) -> Result<Vec<Account>, St
 }
 
 #[tauri::command]
+pub async fn get_editable_accounts(state: State<'_, AppState>) -> Result<Vec<Account>, String> {
+    debug!("Fetching editable accounts...");
+    let base_currency = state.base_currency.read().unwrap().clone();
+    let service = AccountService::new(base_currency);
+    let mut conn = state
+        .pool
+        .get()
+        .map_err(|e| format!("Failed to get connection: {}", e))?;
+    service.get_editable_accounts(&mut conn).map_err(|e| format!("Failed to load accounts: {}", e))
+}
+
+#[tauri::command]
 pub async fn create_account(
     account: NewAccount,
     state: State<'_, AppState>,
