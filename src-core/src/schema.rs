@@ -12,6 +12,8 @@ diesel::table! {
         created_at -> Timestamp,
         updated_at -> Timestamp,
         platform_id -> Nullable<Text>,
+        exchange_name -> Nullable<Text>,
+        api_key -> Nullable<Text>,
     }
 }
 

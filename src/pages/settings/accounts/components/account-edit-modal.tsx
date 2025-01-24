@@ -15,11 +15,17 @@ export function AccountEditModal({ account, open, onClose }: AccountEditModalPro
     id: account?.id || undefined,
     name: account?.name || '',
     balance: account?.balance || 0,
-    accountType: (account?.accountType || 'SECURITIES') as 'SECURITIES' | 'CASH' | 'CRYPTOCURRENCY',
+    accountType: (account?.accountType || 'SECURITIES') as
+      | 'SECURITIES'
+      | 'CASH'
+      | 'CRYPTOCURRENCY'
+      | 'CRYPTO_EXCHANGE',
     group: account?.group ?? undefined,
     currency: account?.currency || settings?.baseCurrency || 'USD',
     isDefault: account?.isDefault || false,
     isActive: account?.id ? account?.isActive : true,
+    exchangeName: account?.exchangeName || undefined,
+    apiKey: account?.apiKey || undefined,
   };
 
   return (

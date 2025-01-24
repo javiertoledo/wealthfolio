@@ -71,15 +71,6 @@ const ActivityPage = () => {
         />
       </div>
       <ActivityForm
-        accounts={
-          accounts
-            ?.filter((acc) => acc.isActive)
-            .map((account) => ({
-              value: account.id,
-              label: account.name,
-              currency: account.currency,
-            })) || []
-        }
         activity={selectedActivity}
         open={showForm}
         onClose={handleFormClose}

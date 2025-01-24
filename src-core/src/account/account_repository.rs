@@ -26,6 +26,16 @@ impl AccountRepository {
         accounts.order(is_active.desc()).load::<Account>(conn)
     }
 
+    pub fn load_editable_accounts(
+        &self,
+        conn: &mut SqliteConnection,
+    ) -> Result<Vec<Account>, diesel::result::Error> {
+        accounts
+            .order(is_active.desc())
+            .filter(account_type.ne_all(vec!["CRYPTO_EXCHANGE"]))
+            .load::<Account>(conn)
+    }
+
     pub fn load_active_accounts(
         &self,
         conn: &mut SqliteConnection,

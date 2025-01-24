@@ -36,6 +36,8 @@ export type Account = {
   createdAt: Date;
   updatedAt: Date;
   platformId?: string; // Optional
+  exchangeName?: string; // Optional
+  apiKey?: string; // Optional
 };
 
 export type Activity = {

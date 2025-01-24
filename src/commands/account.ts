@@ -20,6 +20,20 @@ export const getAccounts = async (): Promise<Account[]> => {
   }
 };
 
+export const getEditableAccounts = async (): Promise<Account[]> => {
+  try {
+    switch (getRunEnv()) {
+      case RUN_ENV.DESKTOP:
+        return invokeTauri('get_editable_accounts');
+      default:
+        throw new Error(`Unsupported`);
+    }
+  } catch (error) {
+    logger.error('Error fetching editable accounts.');
+    throw error;
+  }
+};
+
 // createAccount
 export const createAccount = async (account: NewAccount): Promise<Account> => {
   try {

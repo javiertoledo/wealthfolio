@@ -4,7 +4,7 @@
 mod commands;
 mod menu;
 mod updater;
-use commands::account::{create_account, delete_account, get_accounts, update_account};
+use commands::account::{create_account, delete_account, get_accounts, get_editable_accounts, update_account};
 use commands::activity::{
     check_activities_import, create_activities, create_activity, delete_activity,
     get_account_import_mapping, get_activities, save_account_import_mapping, search_activities,
@@ -127,6 +127,7 @@ pub fn main() {
         })
         .invoke_handler(tauri::generate_handler![
             get_accounts,
+            get_editable_accounts,
             create_account,
             update_account,
             delete_account,

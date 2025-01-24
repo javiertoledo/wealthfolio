@@ -43,6 +43,8 @@ pub struct Account {
     pub created_at: chrono::NaiveDateTime,
     pub updated_at: chrono::NaiveDateTime,
     pub platform_id: Option<String>,
+    pub exchange_name: Option<String>,
+    pub api_key: Option<String>,
 }
 
 #[derive(Insertable, Serialize, Deserialize, Debug, Clone)]
@@ -57,6 +59,8 @@ pub struct NewAccount {
     pub is_default: bool,
     pub is_active: bool,
     pub platform_id: Option<String>,
+    pub exchange_name: Option<String>,
+    pub api_key: Option<String>,
 }
 #[derive(Insertable, AsChangeset, Serialize, Deserialize, Debug, Clone)]
 #[diesel(table_name = crate::schema::accounts)]
@@ -69,6 +73,8 @@ pub struct AccountUpdate {
     pub is_default: bool,
     pub is_active: bool,
     pub platform_id: Option<String>,
+    pub exchange_name: Option<String>,
+    pub api_key: Option<String>,
 }
 
 #[derive(

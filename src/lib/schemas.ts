@@ -20,7 +20,9 @@ export const newAccountSchema = z.object({
   group: z.string().optional(),
   isDefault: z.boolean().optional(),
   isActive: z.boolean().optional(),
-  accountType: z.enum(['SECURITIES', 'CASH', 'CRYPTOCURRENCY']),
+  accountType: z.enum(['SECURITIES', 'CASH', 'CRYPTOCURRENCY', 'CRYPTO_EXCHANGE']),
+  exchangeName: z.enum(['COINBASE']).optional(),
+  apiKey: z.string().optional(),
   currency: z.string({ required_error: 'Please select a currency.' }),
 });
 

@@ -26,7 +26,7 @@ import { useActivityImportMutations } from './hooks/useActivityImportMutations';
 import { FileDropzone } from './components/file-dropzone';
 import { ImportMappingTable } from './components/import-mapping-table';
 import { QueryKeys } from '@/lib/query-keys';
-import { getAccounts } from '@/commands/account';
+import { getEditableAccounts } from '@/commands/account';
 import { ErrorViewer } from './components/csv-error-viewer';
 
 import { useCsvParser } from './hooks/useCsvParser';
@@ -61,8 +61,8 @@ export function ActivityImportForm({
   } = useCsvParser();
 
   const { data: accounts } = useQuery<Account[], Error>({
-    queryKey: [QueryKeys.ACCOUNTS],
-    queryFn: getAccounts,
+    queryKey: [QueryKeys.EDITABLE_ACCOUNTS],
+    queryFn: getEditableAccounts,
   });
 
   const {

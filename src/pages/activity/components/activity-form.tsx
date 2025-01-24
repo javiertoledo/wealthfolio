@@ -45,6 +45,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ActivityType, ActivityTypeSelector } from './activity-type-selector';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { Card, CardContent } from '@/components/ui/card';
+import { QueryKeys } from '@/lib/query-keys';
+import { getEditableAccounts } from '@/commands/account';
+import { useQuery } from '@tanstack/react-query';
 
 type ActivityFormValues = z.infer<typeof newActivitySchema> & {
   showCurrencySelect?: boolean;
@@ -56,7 +59,6 @@ export interface AccountSelectOption {
 }
 
 interface ActivityFormProps {
-  accounts: AccountSelectOption[];
   activity?: ActivityDetails;
   open?: boolean;
   onClose?: () => void;
@@ -75,7 +77,21 @@ const ACTIVITY_TYPE_TO_TAB: Record<string, string> = {
   FEE: 'other',
 };
 
-export function ActivityForm({ accounts, activity, open, onClose }: ActivityFormProps) {
+export function ActivityForm({ activity, open, onClose }: ActivityFormProps) {
+  const { data: accounts } = useQuery({
+    queryKey: [QueryKeys.EDITABLE_ACCOUNTS],
+    queryFn: getEditableAccounts,
+  });
+
+  const accountSelectOptions =
+    accounts
+      ?.filter((acc) => acc.isActive)
+      .map((account) => ({
+        value: account.id,
+        label: account.name,
+        currency: account.currency,
+      })) || []
+  
   const { addActivityMutation, updateActivityMutation } = useActivityMutations(onClose);
 
   const defaultValues = {
@@ -110,7 +126,7 @@ export function ActivityForm({ accounts, activity, open, onClose }: ActivityForm
 
       // For cash activities and fees, set assetId to $CASH-accountCurrency
       if (['DEPOSIT', 'WITHDRAWAL', 'INTEREST', 'FEE'].includes(submitData.activityType)) {
-        const account = accounts.find((a) => a.value === submitData.accountId);
+        const account = accountSelectOptions.find((a) => a.value === submitData.accountId);
         if (account) {
           submitData.assetId = `$CASH-${account.currency}`;
         }
@@ -187,19 +203,19 @@ export function ActivityForm({ accounts, activity, open, onClose }: ActivityForm
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <div className="grid gap-4">
                 <TabsContent value="trade">
-                  <TradeFields accounts={accounts} />
+                  <TradeFields accounts={accountSelectOptions} />
                 </TabsContent>
 
                 <TabsContent value="cash">
-                  <CashFields accounts={accounts} />
+                  <CashFields accounts={accountSelectOptions} />
                 </TabsContent>
 
                 <TabsContent value="income">
-                  <IncomeFields accounts={accounts} />
+                  <IncomeFields accounts={accountSelectOptions} />
                 </TabsContent>
 
                 <TabsContent value="other">
-                  <OtherFields accounts={accounts} />
+                  <OtherFields accounts={accountSelectOptions} />
                 </TabsContent>
               </div>
 

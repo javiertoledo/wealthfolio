@@ -36,6 +36,11 @@ const accountTypes = [
   { label: 'Securities', value: 'SECURITIES' },
   { label: 'Cash', value: 'CASH' },
   { label: 'Crypto', value: 'CRYPTOCURRENCY' },
+  { label: 'Crypto Exchange', value: 'CRYPTO_EXCHANGE' },
+] as const;
+
+const exchangeNames = [
+  { label: 'Coinbase', value: 'COINBASE' },
 ] as const;
 
 import { newAccountSchema } from '@/lib/schemas';
@@ -129,6 +134,51 @@ export function AccountForm({ defaultValues, onSuccess = () => {} }: AccountForm
               </FormItem>
             )}
           />
+
+          {form.watch('accountType') === 'CRYPTO_EXCHANGE' ? (
+            <FormField
+              control={form.control}
+              name="exchangeName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Exchange Type</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select an exchange" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {exchangeNames.map((exchange) => (
+                        <SelectItem value={exchange.value} key={exchange.value}>
+                          {exchange.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+          ) : null}
+
+          {form.watch('accountType') === 'CRYPTO_EXCHANGE' && form.watch('exchangeName') === 'COINBASE' ? (
+            <FormField
+              control={form.control}
+              name="apiKey"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>API Key</FormLabel>
+                  <FormControl>
+                    <Input placeholder="API Key" {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          ) : null}
+
           {!defaultValues?.id ? (
             <FormField
               control={form.control}
